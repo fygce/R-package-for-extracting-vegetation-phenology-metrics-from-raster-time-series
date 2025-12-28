@@ -1,6 +1,6 @@
 # R-package-for-extracting-vegetation-phenology-metrics-from-raster-time-series
 
-`phenoraster` is inspired by the **relative amplitude method** from Timesat. 
+`phenoraster` is inspired by the **relative amplitude method** from TIMESAT. 
 For each pixel, a **threshold is calculated from the full time series**, and the start of season (SOS) 
 and end of season (EOS) are determined when the fitted **Double-Logistic (DL) curve** reaches a specified 
 fraction of this threshold. While following the same logic, the implementation is specific to this R package.
