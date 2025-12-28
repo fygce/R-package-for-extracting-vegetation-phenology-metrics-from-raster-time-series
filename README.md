@@ -5,7 +5,7 @@ For each pixel, a **threshold is calculated from the full time series**, and the
 and end of season (EOS) are determined when the fitted **Double-Logistic (DL) curve** reaches a specified 
 fraction of this threshold. While following the same logic, the implementation is specific to this R package.
 
-## Installation
+Installation
 
 You can install the development version of `phenoraster` from GitHub:
 
@@ -15,8 +15,6 @@ You can install the development version of `phenoraster` from GitHub:
 
 remotes::install_github("fygce/phenoraster")
 
-
-
 This approach reflects the **climatological background** of each pixel, providing several advantages:
 
 - The threshold is **robust to noise and inter-annual variability**, because it uses the full time series rather than a single year.  
@@ -25,7 +23,7 @@ This approach reflects the **climatological background** of each pixel, providin
 - Because the threshold is based on the long-term climatology, **phenological metrics across different years are directly comparable**, enabling meaningful inter-annual analysis.  
 - The method is flexible and can be applied to any regularly sampled raster time series, not limited to CMIP6 GPP data.
 
-### Development Status and Extensibility
+Development Status and Extensibility
 
 `phenoraster` is primarily developed for extracting vegetation phenology metrics from **raster time series**. 
 While the current implementation uses the **Double-Logistic (DL) fitting method** and serial processing, 
