@@ -21,3 +21,6 @@ the package is **not limited to this approach** and is actively being improved.
 Future versions may include **parallel processing** and support for **additional fitting methods**, 
 which can be contributed by both the author and other users.
 
+Contributions are welcome! 
+Please submit changes via GitHub Pull Requests. 
+For major changes or new fitting methods, you may contact the package author for discussion.
