@@ -5,14 +5,8 @@ For each pixel, a **threshold is calculated from the full time series**, and the
 and end of season (EOS) are determined when the fitted **Double-Logistic (DL) curve** reaches a specified 
 fraction of this threshold. While following the same logic, the implementation is specific to this R package.
 
-Installation
-
 You can install the development version of `phenoraster` from GitHub:
-
-```r
-# Install remotes if not already installed
 # install.packages("remotes")
-
 remotes::install_github("fygce/phenoraster")
 
 This approach reflects the **climatological background** of each pixel, providing several advantages:
