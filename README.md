@@ -7,7 +7,7 @@ fraction of this threshold. While following the same logic, the implementation i
 
 ## Installation
 
-# install.packages("remotes")
+install.packages("remotes")
 remotes::install_github("fygce/phenoraster")
 
 ## Note
