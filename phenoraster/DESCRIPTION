@@ -1,0 +1,20 @@
+Package: phenoraster
+Type: Package
+Title: Global Phenology Extraction from Raster Time Series
+Version: 0.1.0
+Authors@R: 
+    person("Yang", "Fu", email = "fuyang@itpcas.ac.cn", role = c("aut", "cre"))
+Description: 
+    Functions for extracting vegetation phenology (SOS, EOS, POS) from raster time series
+    using double-logistic (DL) fitting. Applicable to global raster datasets and flexible
+    for other regularly sampled temporal raster stacks. Implements relative amplitude
+    thresholds for robust seasonal detection.
+License: MIT
+Encoding: UTF-8
+LazyData: true
+Imports:
+    terra,
+    raster,
+    stats,
+    phenofit
+RoxygenNote: 7.3.3
