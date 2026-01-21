@@ -1,4 +1,4 @@
-# R-package-for-extracting-vegetation-phenology-metrics-from-raster-time-series
+# R-package-for-phenology-from-raster
 
 `phenoraster` is inspired by the **relative amplitude method** from TIMESAT3.3. 
 For each pixel, a **threshold is calculated from the full time series**, and the start of season (SOS) 
