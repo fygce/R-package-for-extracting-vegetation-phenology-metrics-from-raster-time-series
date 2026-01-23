@@ -14,9 +14,17 @@ library(phenofit)
 # -------------------------------
 # Step 1: Define input/output paths
 # -------------------------------
-indir <- "H:/cmip6_gpp/historical/ACCESS-ESM1-5/tif_lon180"
-outdir <- "H:/cmip6_gpp/output_pheno_test"
-if(!dir.exists(outdir)) dir.create(outdir, recursive = TRUE)
+# Input: example CMIP6 GPP data included in the package
+indir <- system.file(
+  "extdata/cmip6_gpp/historical/ACCESS-ESM1-5/tif_lon180",
+  package = "phenoraster"
+)
+
+stopifnot(dir.exists(indir))
+
+# Output: temporary directory for demonstration
+outdir <- file.path(tempdir(), "phenoraster_output_TS1")
+dir.create(outdir, showWarnings = FALSE, recursive = TRUE)
 
 # -------------------------------
 # Step 2: Read raster time series
@@ -96,4 +104,5 @@ res_serial <- global_pheno_extraction(
 )
 
 cat("Serial phenology extraction finished. Results saved to:", outdir, "\n")
+
 
