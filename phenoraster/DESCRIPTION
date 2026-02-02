@@ -3,7 +3,7 @@ Type: Package
 Title: Phenology Extraction from Raster Time Series Using Double-Logistic Models
 Version: 0.3.0
 Authors@R: 
-    person("Your", "Name", email = "your_email@example.com", role = c("aut", "cre"))
+    person("Yang", "Fu", email = "fuyang@itpcas.ac.cn", role = c("aut", "cre"))
 Description: 
     Tools for extracting vegetation phenology metrics (Start of Season, Peak of Season, 
     End of Season) from raster time series using double-logistic (DL) curve fitting. 
