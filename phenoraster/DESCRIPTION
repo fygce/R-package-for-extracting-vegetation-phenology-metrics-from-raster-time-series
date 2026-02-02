@@ -1,15 +1,19 @@
 Package: phenoraster
 Type: Package
-Title: Global Phenology Extraction from Raster Time Series
-Version: 0.2.0
+Title: Phenology Extraction from Raster Time Series Using Double-Logistic Models
+Version: 0.3.0
 Authors@R: 
     person("Your", "Name", email = "your_email@example.com", role = c("aut", "cre"))
 Description: 
-    Functions for extracting vegetation phenology metrics (SOS, EOS, POS) from raster time series 
-    using double-logistic (DL) curve fitting. The package supports both relative (multi-year 
-    climatological) and dynamic (year-specific) threshold strategies for seasonal detection. 
-    Originally designed for large-scale CMIP6 GPP datasets, it is also applicable to other 
-    regularly sampled raster time series.
+    Tools for extracting vegetation phenology metrics (Start of Season, Peak of Season, 
+    End of Season) from raster time series using double-logistic (DL) curve fitting. 
+    The package implements three phenology extraction strategies inspired by the TIMESAT 
+    framework: (1) a multi-year climatological relative threshold method (TS3), 
+    (2) a year-specific dynamic threshold method (TS1), and 
+    (3) a second-order derivative-based method (D2). 
+    These methods are suitable for a wide range of regularly sampled raster datasets, 
+    including CMIP6 monthly gross primary productivity (GPP) and high-temporal-resolution 
+    vegetation indices such as GIMMS NDVI3g+ and MODIS products.
 License: MIT
 Encoding: UTF-8
 LazyData: true
