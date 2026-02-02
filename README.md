@@ -1,100 +1,164 @@
-# R-package-for-phenology-from-raster
+# phenoraster: R package for phenology extraction from raster time series
 
-`phenoraster` is an R package for extracting vegetation phenology metrics from raster time series.
-The package currently supports two phenology threshold strategies, both based on
-Double-Logistic (DL) curve fitting, but differing in how the phenological threshold is defined.
+`phenoraster` is an R package for extracting vegetation phenology metrics
+(Start of Season, Peak of Season, End of Season) from raster time series.
+
+The package is based on **Double-Logistic (DL) curve fitting** and currently
+supports **three phenology extraction strategies**, corresponding to widely
+used methods in the phenology literature and the TIMESAT framework.
+
+---
 
 ## Installation
 
+```r
 install.packages("remotes")
-
 remotes::install_github("fygce/phenoraster")
 
-## Supported Phenology Threshold Methods
-1. Relative Threshold Method (Multi-year Climatological Threshold)
+# Supported Phenology Extraction Methods
+1. TS3 — Relative Threshold Method (Multi-year Climatological Threshold)
+Corresponds to TIMESAT Method 3 (Relative Amplitude Threshold)
 
-The original implementation of phenoraster is inspired by the relative amplitude method
-from TIMESAT 3.3.
+This method is inspired by the relative amplitude approach implemented in
+TIMESAT 3.3.
 
-For each pixel, a single threshold is calculated from the full multi-year time series
-(i.e. the climatological growth curve). The start of season (SOS) and end of season (EOS)
-are identified when the fitted Double-Logistic (DL) curve reaches a specified fraction
-of this threshold. While following the same conceptual logic as TIMESAT, the implementation
-is specific to this R package.
+For each pixel, a single climatological threshold is calculated from the
+entire multi-year fitted DL time series.
+Start of Season (SOS) and End of Season (EOS) are identified when the yearly
+fitted DL curve crosses a fixed fraction of this climatological amplitude.
+
+Key characteristics
+Threshold is derived from the full multi-year growth curve
+
+A single, fixed threshold is applied consistently across all years
+
+Designed for long-term phenology and climatological analysis
 
 Advantages
+Robust to noise and inter-annual variability
 
-This approach reflects the climatological background of each pixel and offers several advantages:
+Extreme values in individual years do not bias the threshold
 
-The threshold is robust to noise and inter-annual variability, because it is derived from the full time series rather than a single year.
+Preserves spatial heterogeneity while maintaining temporal consistency
 
-Extreme values in individual years (e.g., an unusually high seasonal peak) do not distort the threshold, avoiding bias in SOS/EOS extraction.
+Phenological metrics are directly comparable across years
 
-Each pixel has a local threshold, preserving spatial heterogeneity while maintaining consistency across years.
+Well suited for long-term ecosystem and climate change studies
 
-Because the threshold is climatology-based, phenological metrics from different years are directly comparable, facilitating inter-annual analysis.
-
-The method is flexible and can be applied to any regularly sampled raster time series, not limited to CMIP6 GPP data.
-
-Important Note on Usage
-
+Important usage note
 Important:
-Because the relative threshold is defined from the multi-year growth curve,
-the entire time series must be provided as input in a single run.
+Because the threshold is defined from the full multi-year record,
+all years must be processed together in a single run.
 
-Running the extraction on subsets of years separately will result in different thresholds.
+Running this method on segmented subsets of years will result in different
+thresholds and introduce artificial discontinuities in SOS/EOS.
 
-This will lead to artificial discontinuities in the extracted phenology time series (SOS/EOS).
+Example workflow script
 
-Therefore, this method is not suitable for segmented or incremental processing unless the
-threshold is fixed beforehand using the full temporal record.
+fit_DL_pipeline_seed_pixel_TS3.R
+Typical input data
+CMIP6 monthly GPP
 
-2. Dynamic Threshold Method (Year-specific Threshold)
+Other regularly sampled long-term raster time series
 
-In addition to the relative threshold approach, phenoraster now supports a dynamic threshold method,
-which is more widely used in phenology studies.
+2. TS1 — Dynamic Threshold Method (Year-specific Threshold)
+Corresponds to TIMESAT Method 1 (Dynamic Relative Threshold)
 
-In this approach, the threshold is calculated independently for each year, based on the
-pixel-specific annual growth curve. SOS and EOS are determined when the yearly fitted
-DL curve reaches a given fraction of that year’s amplitude.
+In this approach, the threshold is calculated independently for each year
+based on the fitted DL curve of that year.
+
+SOS and EOS are determined when the yearly DL curve reaches a given fraction
+of the annual amplitude.
+
+Key characteristics
+Threshold varies from year to year
+
+Fully adaptive to inter-annual variability
+
+Each year is treated independently
 
 Advantages
+Sensitive to year-to-year phenological shifts
 
-The dynamic threshold method offers complementary strengths:
+Well suited for climate variability and extreme event analysis
 
-The threshold is adapted to the inter-annual variability of each pixel.
+Allows segmented or incremental processing
 
-Phenological metrics are directly linked to the actual growth conditions of each year.
+Computationally flexible for large datasets
 
-The method is well suited for detecting year-to-year phenological shifts, especially under climate variability and extremes.
+Example workflow script
 
-It allows segmented or year-by-year processing, making it more flexible for large datasets or incremental analyses.
+fit_DL_pipeline_seed_pixel_TS1_NH.R
+Typical input data
+CMIP6 monthly GPP
 
-This method is particularly useful when the research focus is on annual phenological responses
-rather than long-term climatological comparisons.
+Other regularly sampled raster time series
 
-## Scripts and Workflows
+3. D2 — Second-Order Derivative Method
+Second-derivative phenology extraction based on DL curves
 
-The package provides both functions and executable scripts for phenology extraction.
+This method extracts phenological metrics using the second-order derivative
+of the fitted Double-Logistic curve.
 
-Relative threshold workflows are implemented using functions operating on the full time series：fit_DL_pipeline_seed_pixel.R
+SOS: first local maximum of the second derivative in the first half of the year
 
-Dynamic threshold workflows can be executed directly using the script: fit_DL_pipeline_seed_pixel_TS1_NH.R
+POS: timing of the maximum fitted value
 
-## Development Status and Extensibility
+EOS: symmetric definition based on curvature in the second half of the year
 
-phenoraster is primarily developed for extracting vegetation phenology metrics from
-raster time series.
+This approach is widely used for high-temporal-resolution vegetation indices,
+where curvature-based detection is more appropriate than threshold-based methods.
 
-While the current implementation focuses on Double-Logistic (DL) fitting, the package
-is designed to be extensible. Future versions may include:
+Key characteristics
+Does not rely on amplitude thresholds
 
-Parallel processing
+Based on curve shape and inflection behavior
+
+Particularly suitable for dense or quasi-dense time series
+
+Example workflow script
+
+fit_DL_pipeline_seed_pixel_D2_NH.R
+Typical input data
+GIMMS NDVI3g+
+
+MODIS NDVI / EVI
+
+Other biweekly or high-frequency vegetation indices
+
+# Scripts and Workflows
+The package provides both reusable functions and end-to-end workflow scripts.
+
+Method	Workflow script
+TS3 (Relative threshold, climatological)	fit_DL_pipeline_seed_pixel_TS3.R
+TS1 (Dynamic threshold, yearly)	fit_DL_pipeline_seed_pixel_TS1_NH.R
+D2 (Second derivative)	fit_DL_pipeline_seed_pixel_D2_NH.R
+
+Each workflow script includes:
+
+Single-pixel diagnostic testing
+
+Visualization of fitted DL curves and phenological points
+
+Global raster-scale extraction
+
+Optional Northern Hemisphere masking
+
+# Development Status and Extensibility
+phenoraster is actively developed for extracting vegetation phenology metrics
+from raster time series.
+
+The current implementation focuses on Double-Logistic curve fitting, but
+the package is designed to be extensible. Possible future extensions include:
+
+Parallel and block-wise optimization
 
 Additional curve fitting methods
 
 Alternative phenology definitions
 
+Support for additional vegetation indices
+
 Contributions are welcome via GitHub Pull Requests.
-For major changes or new methodological extensions, users are encouraged to contact the
+For major methodological extensions, users are encouraged to contact the
 package author for discussion.
